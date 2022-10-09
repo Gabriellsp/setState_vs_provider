@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider_state_management/args/models/item_model.dart';
-import 'package:provider_state_management/args/pages/catalogo/widgets/item.dart';
+import 'package:provider_state_management/args/pages/carrinho/widgets/no_items.dart';
+import 'package:provider_state_management/shared/style/text_style.dart';
+import 'package:provider_state_management/shared/widgets/item.dart';
 
 class CarrinhoPage extends StatefulWidget {
   final List<ItemModel>? listItemSelected;
@@ -15,13 +17,12 @@ class CarrinhoPage extends StatefulWidget {
 }
 
 class _CarrinhoPageState extends State<CarrinhoPage> {
-  late double totalValue;
-
+  late double? totalValue;
   @override
   void initState() {
     super.initState();
-    totalValue = 0;
-    _getTotalValue();
+
+    totalValue = _getTotalValue();
   }
 
   @override
@@ -30,57 +31,105 @@ class _CarrinhoPageState extends State<CarrinhoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Carrinho')),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.add_shopping_cart_rounded,
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Itens selecionados:",
+        child: widget.listItemSelected!.isEmpty
+            ? const NoItems(
+                title: "Nenhum item adicionado ao carrinho ainda",
+              )
+            : Column(
+                children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Itens selecionados:",
+                      style: font18BoldBlack,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  _listItensSelected(),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  _totalValue(),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  _buyButton(
+                    width: screenSize.width * 0.90,
+                  ),
+                ],
               ),
-            ),
-            Container(
-              height: screenSize.height * 0.45,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 0.8,
-                  color: Colors.blue,
-                ),
-                borderRadius: BorderRadius.circular(2.5),
-              ),
-              child: ListView.builder(
-                  itemCount: widget.listItemSelected!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Item(
-                      item: widget.listItemSelected!.elementAt(index),
-                    );
-                  }),
-            ),
-            Text("R\$ ${totalValue.toStringAsFixed(2)}"),
-          ],
-        ),
       ),
     );
   }
 
-  void _getTotalValue() {
-    double x = 0;
-    for (var item in widget.listItemSelected!) {
-      x = x + item.value!;
-    }
+  Widget _listItensSelected() => ConstrainedBox(
+        constraints: const BoxConstraints(
+          minHeight: 120,
+          maxHeight: 340,
+        ),
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount:
+              widget.listItemSelected!.where((item) => item.isSelected!).length,
+          itemBuilder: (BuildContext context, int index) {
+            return Item(
+                item: widget.listItemSelected!.elementAt(index),
+                callbackFunction: _setSelectedItem);
+          },
+        ),
+      );
+
+  void _setSelectedItem(bool isSelected, ItemModel item) {
     setState(() {
-      totalValue = x;
+      item.isSelected = isSelected;
+      widget.listItemSelected!.remove(item);
+      totalValue = _getTotalValue();
     });
   }
+
+  double _getTotalValue() {
+    double total = 0;
+    for (var item in widget.listItemSelected!) {
+      total = total + item.value!;
+    }
+    return total;
+  }
+
+  Widget _totalValue() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Total: ",
+            style: font18BoldBlack,
+          ),
+          Text(
+            "R\$ ${totalValue!.toStringAsFixed(2)}",
+            style: font18BoldBlueAccent,
+          ),
+        ],
+      );
+
+  Widget _buyButton({required double width}) => SizedBox(
+        width: width,
+        height: 40,
+        child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.blueAccent),
+            ),
+            onPressed: () {
+              for (var item in widget.listItemSelected!) {
+                item.isDisponible = false;
+                item.isSelected = false;
+              }
+              Navigator.of(context).pop();
+            },
+            child: const Text("Comprar")),
+      );
 }
