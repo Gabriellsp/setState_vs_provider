@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider_state_management/args/models/item_model.dart';
-import 'package:provider_state_management/args/pages/carrinho/widgets/no_items.dart';
+import 'package:provider_state_management/shared/widgets/no_items.dart';
 import 'package:provider_state_management/shared/style/text_style.dart';
 import 'package:provider_state_management/shared/widgets/item.dart';
 
