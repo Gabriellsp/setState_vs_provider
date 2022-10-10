@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider_state_management/args/models/item_model.dart';
-import 'package:provider_state_management/shared/style/text_style.dart';
-import 'package:provider_state_management/shared/widgets/card_item.dart';
+import 'package:provider_state_management/args/shared/style/text_style.dart';
+import 'package:provider_state_management/args/shared/widgets/card_item.dart';
 
 class Item extends StatelessWidget {
   final ItemModel? item;

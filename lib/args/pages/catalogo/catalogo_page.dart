@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider_state_management/args/models/item_model.dart';
-import 'package:provider_state_management/shared/widgets/no_items.dart';
-import 'package:provider_state_management/shared/widgets/item.dart';
+import 'package:provider_state_management/args/shared/widgets/no_items.dart';
+import 'package:provider_state_management/args/shared/widgets/item.dart';
 
 class CatalogoPage extends StatefulWidget {
   const CatalogoPage({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _CatalogoState extends State<CatalogoPage> {
   @override
   Widget build(BuildContext context) {
     var availableItems =
-        itens.where((element) => element.isDisponible!).toList();
+        itens.where((element) => element.isAvailable!).toList();
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Catálogo')),

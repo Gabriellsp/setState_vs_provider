@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider_state_management/shared/style/text_style.dart';
+import 'package:provider_state_management/args/shared/style/text_style.dart';
 
 class NoItems extends StatelessWidget {
   final String? title;

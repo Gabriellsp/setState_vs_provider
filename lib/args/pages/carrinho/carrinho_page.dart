@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider_state_management/args/models/item_model.dart';
-import 'package:provider_state_management/shared/widgets/no_items.dart';
-import 'package:provider_state_management/shared/style/text_style.dart';
-import 'package:provider_state_management/shared/widgets/item.dart';
+import 'package:provider_state_management/args/shared/widgets/no_items.dart';
+import 'package:provider_state_management/args/shared/style/text_style.dart';
+import 'package:provider_state_management/args/shared/widgets/item.dart';
 
 class CarrinhoPage extends StatefulWidget {
   final List<ItemModel>? listItemSelected;
@@ -125,7 +125,7 @@ class _CarrinhoPageState extends State<CarrinhoPage> {
             ),
             onPressed: () {
               for (var item in widget.listItemSelected!) {
-                item.isDisponible = false;
+                item.isAvailable = false;
                 item.isSelected = false;
               }
               Navigator.of(context).pop();
