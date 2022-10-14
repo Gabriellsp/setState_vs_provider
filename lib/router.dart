@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider_state_management/provider/pages/carrinho/carrinho_page.dart';
-import 'package:provider_state_management/provider/pages/catalogo/catalogo_page.dart';
+
 import 'package:provider_state_management/provider/shared/constants/route_paths.dart';
+import 'package:provider_state_management/provider/views/carrinho/carrinho_page.dart';
+import 'package:provider_state_management/provider/views/catalogo/catalogo_page.dart';
 
 class RouterManager {
   static Route<dynamic> generateRoute(RouteSettings settings) {

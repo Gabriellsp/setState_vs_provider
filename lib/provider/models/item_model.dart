@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class ItemModel extends ChangeNotifier {
+class ItemModel {
   late int? id;
   late String? name;
   late Color? color;
